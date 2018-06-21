@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# IDEs and editors
+/.idea
+
+# Operting system
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Input Data Files
+models
+
+# Project Output
+data
+runs
+archive
