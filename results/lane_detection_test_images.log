@@ -1,0 +1,90 @@
+Running lane detection with arguments: Namespace(run_image=True, run_video=False, steps=[])
+
+** Running lane detection on test images **
+
+###################################
+# Test Images
+###################################
+Sample Image: ../test_images/test3.jpg
+Image Size: 1280x720
+Image Min/Max Values: (0, 255)
+
+###################################
+# Correct Image Distortions
+###################################
+Store the undistorted image to ../output_images/undistorted/straight_lines1.png
+Store the undistorted image to ../output_images/undistorted/straight_lines2.png
+Store the undistorted image to ../output_images/undistorted/test1.png
+Store the undistorted image to ../output_images/undistorted/test2.png
+Store the undistorted image to ../output_images/undistorted/test3.png
+Store the undistorted image to ../output_images/undistorted/test4.png
+Store the undistorted image to ../output_images/undistorted/test5.png
+Store the undistorted image to ../output_images/undistorted/test6.png
+
+###################################
+# Color Transform and Gradients
+###################################
+Store the binary lane image to ../output_images/binary_lanes/straight_lines1.png
+Store the binary lane image to ../output_images/binary_lanes/straight_lines2.png
+Store the binary lane image to ../output_images/binary_lanes/test1.png
+Store the binary lane image to ../output_images/binary_lanes/test2.png
+Store the binary lane image to ../output_images/binary_lanes/test3.png
+Store the binary lane image to ../output_images/binary_lanes/test4.png
+Store the binary lane image to ../output_images/binary_lanes/test5.png
+Store the binary lane image to ../output_images/binary_lanes/test6.png
+
+###################################
+# Transform Image Perspective
+###################################
+Store the perspective transform result image to ../output_images/perspective/marked/straight_lines1.png
+Store the perspective transform source image to ../output_images/perspective/marked/straight_lines1_src.png
+Store the perspective transform result image to ../output_images/perspective/marked/straight_lines2.png
+Store the perspective transform source image to ../output_images/perspective/marked/straight_lines2_src.png
+Store the perspective transform result image to ../output_images/perspective/marked/test1.png
+Store the perspective transform source image to ../output_images/perspective/marked/test1_src.png
+Store the perspective transform result image to ../output_images/perspective/marked/test2.png
+Store the perspective transform source image to ../output_images/perspective/marked/test2_src.png
+Store the perspective transform result image to ../output_images/perspective/marked/test3.png
+Store the perspective transform source image to ../output_images/perspective/marked/test3_src.png
+Store the perspective transform result image to ../output_images/perspective/marked/test4.png
+Store the perspective transform source image to ../output_images/perspective/marked/test4_src.png
+Store the perspective transform result image to ../output_images/perspective/marked/test5.png
+Store the perspective transform source image to ../output_images/perspective/marked/test5_src.png
+Store the perspective transform result image to ../output_images/perspective/marked/test6.png
+Store the perspective transform source image to ../output_images/perspective/marked/test6_src.png
+Store the perspective transform result image to ../output_images/perspective/marked_bin/straight_lines1.png
+Store the perspective transform source image to ../output_images/perspective/marked_bin/straight_lines1_src.png
+Store the perspective transform result image to ../output_images/perspective/marked_bin/straight_lines2.png
+Store the perspective transform source image to ../output_images/perspective/marked_bin/straight_lines2_src.png
+Store the perspective transform result image to ../output_images/perspective/marked_bin/test1.png
+Store the perspective transform source image to ../output_images/perspective/marked_bin/test1_src.png
+Store the perspective transform result image to ../output_images/perspective/marked_bin/test2.png
+Store the perspective transform source image to ../output_images/perspective/marked_bin/test2_src.png
+Store the perspective transform result image to ../output_images/perspective/marked_bin/test3.png
+Store the perspective transform source image to ../output_images/perspective/marked_bin/test3_src.png
+Store the perspective transform result image to ../output_images/perspective/marked_bin/test4.png
+Store the perspective transform source image to ../output_images/perspective/marked_bin/test4_src.png
+Store the perspective transform result image to ../output_images/perspective/marked_bin/test5.png
+Store the perspective transform source image to ../output_images/perspective/marked_bin/test5_src.png
+Store the perspective transform result image to ../output_images/perspective/marked_bin/test6.png
+Store the perspective transform source image to ../output_images/perspective/marked_bin/test6_src.png
+Store the perspective transform result image to ../output_images/perspective/straight_lines1.png
+Store the perspective transform result image to ../output_images/perspective/straight_lines2.png
+Store the perspective transform result image to ../output_images/perspective/test1.png
+Store the perspective transform result image to ../output_images/perspective/test2.png
+Store the perspective transform result image to ../output_images/perspective/test3.png
+Store the perspective transform result image to ../output_images/perspective/test4.png
+Store the perspective transform result image to ../output_images/perspective/test5.png
+Store the perspective transform result image to ../output_images/perspective/test6.png
+
+###################################
+# Find Lane Lines
+###################################
+Store the slide window lane detected image to ../output_images/slide_win/straight_lines1.png
+Store the slide window lane detected image to ../output_images/slide_win/straight_lines2.png
+Store the slide window lane detected image to ../output_images/slide_win/test1.png
+Store the slide window lane detected image to ../output_images/slide_win/test2.png
+Store the slide window lane detected image to ../output_images/slide_win/test3.png
+Store the slide window lane detected image to ../output_images/slide_win/test4.png
+Store the slide window lane detected image to ../output_images/slide_win/test5.png
+Store the slide window lane detected image to ../output_images/slide_win/test6.png
