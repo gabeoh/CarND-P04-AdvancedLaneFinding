@@ -51,7 +51,7 @@ successfully meet the project goal.
 
 ### 1. Camera Matrix and Distortion Coefficients
 The source code for the camera calibration is located in
-`./py-src/p05_01_camera_calibration.py`.
+[py-src/p05_01_camera_calibration.py](py-src/p05_01_camera_calibration.py).
 
 #### Find chessboard corners _`(Line: 35-66)`_
 First, _object points_ are prepared for the chessboard with 9x6 inner corners.
@@ -74,12 +74,12 @@ function using camera matrix and distortion coefficient computed above.
 ### 2. Distortion Correction on Calibration Images
 Performed the distortion correction on three of the provided calibration
 images (calibration1.jpg, calibration2.jpg, and calibration3.jpg).  The result
-of the distortion correction is demonstrated below. 
+of the distortion correction is demonstrated below
+([output_images/calibration](output_images/calibration)).
 
 ![undistort_calibration1.png][img_calib_01]
 ![undistort_calibration2.png][img_calib_02]
 ![undistort_calibration3.png][img_calib_03]
-
 
 
 ---
@@ -88,7 +88,8 @@ of the distortion correction is demonstrated below.
 ### 1. Distortion Correction on Test Images
 Image distortion correction is performed on provided test images using
 camera matrix and distortion coefficients computed in the camera calibration
-step.  The corrected images are stored in `output_images/undistorted/`
+step.  The corrected images are stored in
+[output_images/undistorted](output_images/undistorted)
 directory.
 
 As shown in the example below, the distortion correction is prominent for the
@@ -103,7 +104,8 @@ horizontal line near the bottom of the image.
 
 ### 2. Create Lane Pixel Images
 The source code for creating lane pixel images is located at
-`Line 66-141` of `./py-src/p05_02_lane_detection.py`.
+`Line 66-141` of 
+[py-src/p05_02_lane_detection.py](py-src/p05_02_lane_detection.py).
 
 A combination of gradient and color thresholds is used to create binary
 image files that contain lane pixels.
@@ -130,7 +132,7 @@ The values are determined by iterative experiments and visual verifications.
 
 
 The resulting binary lane pixel images are stored in
-`output_images/binary_lanes/` directory.
+[output_images/binary_lanes](output_images/binary_lanes) directory.
 An example image is shown below.
 
 #### Binary Lane Image (test3.png)
@@ -139,7 +141,8 @@ An example image is shown below.
 
 ### 3. Perspective Transform
 The source code for the perspective transform is located at
-`Line 144-231` of `./py-src/p05_02_lane_detection.py`.
+`Line 144-231` of 
+[py-src/p05_02_lane_detection.py](py-src/p05_02_lane_detection.py).
 
 First, the source corners for the perspective transform are found using
 undistorted version of the two straight lane line test images
@@ -162,8 +165,8 @@ transform matrix (and it inverse transform) is computed using
 
 The computed transform matrix is verified on test images.
 Transformed images with source and destination corner markings are located
-under `output_images/perspective/marked/` and 
-`output_images/perspective/marked_bin/` directories.
+under 
+[output_images/perspective/](output_images/perspective/) directory.
 Examples of the transformation are shown below.
 
 #### Perspective Transform of Straight Lane Image
@@ -190,7 +193,8 @@ Examples of the transformation are shown below.
 
 ### 4. Identify Lane-Line Pixels
 The source code for the lane-line pixel identification is located at
-`Line 234-362` of `./py-src/p05_02_lane_detection.py`.
+`Line 234-362` of 
+[py-src/p05_02_lane_detection.py](py-src/p05_02_lane_detection.py).
 
 Histogram and sliding window methods are used to identify lane-line pixels
 in the test images.
