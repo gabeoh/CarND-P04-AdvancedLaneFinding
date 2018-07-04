@@ -1,0 +1,37 @@
+
+###################################
+# Calibration Images
+###################################
+Sample Image: ../camera_cal/calibration2.jpg
+Image Size: 1280x720
+Image Min/Max Values: (0, 255)
+
+###################################
+# Find Chessboard Corners
+###################################
+Warning: Failed to find chessboard corners for calibration1.jpg
+Warning: Failed to find chessboard corners for calibration4.jpg
+Warning: Failed to find chessboard corners for calibration5.jpg
+Calibration Images: 17 valid calibration images out of 20 (85.00%)
+
+###################################
+# Calibrate Camera
+###################################
+Re-projection Error: 1.1869
+Camera Matrix: [[1.15396093e+03 0.00000000e+00 6.69705357e+02]
+ [0.00000000e+00 1.14802496e+03 3.85656234e+02]
+ [0.00000000e+00 0.00000000e+00 1.00000000e+00]]
+Distortion Coefficient: [[-2.41017956e-01 -5.30721173e-02 -1.15810355e-03 -1.28318856e-04
+   2.67125290e-02]]
+
+###################################
+# Store Calibration Parameters
+###################################
+Pickle the camera calibration parameters to ../results/camera_cal.p
+
+###################################
+# Display Undistorted Images
+###################################
+Store distortion correction images to ../output_images/calibration/undistort_calibration1.png
+Store distortion correction images to ../output_images/calibration/undistort_calibration2.png
+Store distortion correction images to ../output_images/calibration/undistort_calibration3.png
