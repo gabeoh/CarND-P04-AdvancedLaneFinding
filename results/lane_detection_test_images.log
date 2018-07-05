@@ -80,11 +80,39 @@ Store the perspective transform result image to ../output_images/perspective/tes
 ###################################
 # Find Lane Lines
 ###################################
+Fitting polynomial (left)  for 'straight_lines1.png': -0.000026, 0.0163, 340.8
+Fitting polynomial (right) for 'straight_lines1.png': -0.000106, 0.1027, 933.7
 Store the slide window lane detected image to ../output_images/slide_win/straight_lines1.png
+Fitting polynomial (left)  for 'straight_lines2.png': -0.000099, 0.1036, 316.5
+Fitting polynomial (right) for 'straight_lines2.png': -0.000042, 0.0208, 969.0
 Store the slide window lane detected image to ../output_images/slide_win/straight_lines2.png
+Fitting polynomial (left)  for 'test1.png': 0.000405, -0.5029, 518.4
+Fitting polynomial (right) for 'test1.png': 0.000440, -0.5673, 1190.7
 Store the slide window lane detected image to ../output_images/slide_win/test1.png
+Fitting polynomial (left)  for 'test2.png': -0.000396, 0.5748, 190.7
+Fitting polynomial (right) for 'test2.png': -0.000484, 0.6540, 791.3
 Store the slide window lane detected image to ../output_images/slide_win/test2.png
+Fitting polynomial (left)  for 'test3.png': 0.000296, -0.5442, 597.9
+Fitting polynomial (right) for 'test3.png': 0.000295, -0.4982, 1193.1
 Store the slide window lane detected image to ../output_images/slide_win/test3.png
+Fitting polynomial (left)  for 'test4.png': 0.000193, -0.2492, 461.4
+Fitting polynomial (right) for 'test4.png': -0.001081, 0.6445, 1166.1
 Store the slide window lane detected image to ../output_images/slide_win/test4.png
+Fitting polynomial (left)  for 'test5.png': 0.000377, -0.5277, 495.3
+Fitting polynomial (right) for 'test5.png': 0.000620, -0.7150, 1203.6
 Store the slide window lane detected image to ../output_images/slide_win/test5.png
+Fitting polynomial (left)  for 'test6.png': 0.000127, -0.3948, 584.9
+Fitting polynomial (right) for 'test6.png': 0.000116, -0.3383, 1187.4
 Store the slide window lane detected image to ../output_images/slide_win/test6.png
+
+###################################
+# Measure Curvature and Offset
+###################################
+straight_lines1 - Curvatures: (5867.5 m, 1422.9 m), Offset: -0.035 m
+straight_lines2 - Curvatures: (1511.9 m, 3567.5 m), Offset: -0.063 m
+test1 - Curvatures: (371.0 m, 341.0 m), Offset: -0.279 m
+test2 - Curvatures: (379.0 m, 310.0 m), Offset: -0.377 m
+test3 - Curvatures: (507.4 m, 509.3 m), Offset: -0.193 m
+test4 - Curvatures: (776.1 m, 142.2 m), Offset: -0.497 m
+test5 - Curvatures: (398.4 m, 242.2 m), Offset: -0.119 m
+test6 - Curvatures: (1185.5 m, 1292.0 m), Offset: -0.262 m

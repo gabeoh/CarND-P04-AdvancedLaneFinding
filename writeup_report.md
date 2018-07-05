@@ -213,7 +213,8 @@ Once all lane line pixels are identified, the 2nd order polynomial is used
 to characterize the lane lines. 
 
 The lane line identified images are located
-under `output_images/slide_win/` directory.
+under 
+[output_images/slide_win/](output_images/slide_win/) directory.
 An example image is shown below.
 
 **Lane Detected Image** - _test3.png_
@@ -223,18 +224,38 @@ An example image is shown below.
 
 
 ### 5. Calculate Lane Curvature and Vehicle Position
-**Describe how (and identify where in your code) you calculated the radius 
-of curvature of the lane and the position of the vehicle with respect to 
-center.**
+The implementation of calculating lane curvature and vehicle position
+is located at `Line 365-419` of 
+[py-src/p05_02_lane_detection.py](py-src/p05_02_lane_detection.py).
 
-_Here the idea is to take the measurements of where the lane lines are and 
-estimate how much the road is curving and where the vehicle is located with 
-respect to the center of the lane. The radius of curvature may be given in 
-meters assuming the curve of the road follows a circle. For the position of 
-the vehicle, you may assume the camera is mounted at the center of the car 
-and the deviation of the midpoint of the lane from the center of the image 
-is the offset you're looking for. As with the polynomial fitting, convert 
-from pixels to meters._
+The radius of lane curvature is calculated in meters at the bottom of
+the image.  In assumption of the lane width of 3.7m (over 640 pixels) and
+the length of 30m (over 720 pixels), 3.7/640 and 30/720 meters
+per pixel converting factors are used for x and y dimensions respectively. 
+
+With pixel-to-meter converting factors, the polynomial coefficients and
+the evaluating y-coordinate in pixels are converted to in meters.
+Then, the lane curvature is computed using _radius of curvature_ formula.
+
+The vehicle position (ie. horizontal offset from lane center in meters)
+is determined by computing the distance between image center
+(vehicle position) and the lane mid point.
+Negative offsets indicate that the vehicle is positioned on the left of
+the lane center, and positive ones indicate the vehicle in on the right.
+
+The table below shows computed lane curvature and vehicle offset of
+each test image.
+
+| Image File        | Curvature Left  | Curvature Right | Position Offset |
+|:-----------------:|:---------------:|:---------------:|:---------------:|
+| straight_lines1   | 5867.5 m        | 1422.9 m        | -0.035 m        |
+| straight_lines2   | 1511.9 m        | 3567.5 m        | -0.063 m        |
+| test1             | 371.0 m         | 341.0 m         | -0.279 m        |
+| test2             | 379.0 m         | 310.0 m         | -0.377 m        |
+| test3             | 507.4 m         | 509.3 m         | -0.193 m        |
+| test4             | 776.1 m         | 142.2 m         | -0.497 m        |
+| test5             | 398.4 m         | 242.2 m         | -0.119 m        |
+| test6             | 1185.5 m        | 1292.0 m        | -0.262 m        |
 
 
 
@@ -335,3 +356,5 @@ I were going to pursue this project further.
   - [output_images/binary_lanes](output_images/binary_lanes)
 - Perspective Transform
   - [output_images/perspective](output_images/perspective)
+- Lane Identified Images (sliding windows)
+  - [output_images/slide_win/](output_images/slide_win/)
