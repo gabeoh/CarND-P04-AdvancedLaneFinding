@@ -14,6 +14,7 @@ undistorted_img_dir = output_dir + 'undistorted/'
 binary_lane_dir = output_dir + 'binary_lanes/'
 perspective_trans_dir = output_dir + 'perspective/'
 slide_win_dir = output_dir + 'slide_win/'
+overlay_dir = output_dir + 'overlay/'
 
 def print_section_header(title):
     """
@@ -38,7 +39,11 @@ def analyze_test_image(img_path):
 
 
 #%% Step 1 - Correct image distortion
-def correct_image_distortion(pickle_file):
+def correct_image_distortion(img, camera_mtx, dist_coeffs):
+    img_undist = cv2.undistort(img, camera_mtx, dist_coeffs, None, camera_mtx)
+    return img_undist
+
+def perform_distortion_correction(pickle_file):
     print_section_header("Correct Image Distortions")
 
     # Load camera calibration parameters
@@ -55,7 +60,7 @@ def correct_image_distortion(pickle_file):
         img_path = test_img_dir + img_file
         img = cv2.imread(img_path)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img_undist = cv2.undistort(img, camera_mtx, dist_coeffs, None, camera_mtx)
+        img_undist = correct_image_distortion(img, camera_mtx, dist_coeffs)
 
         # Save output files
         outfile = undistorted_img_dir + img_name + '.png'
@@ -116,7 +121,18 @@ def get_binary_lane_pixels_color_saturation(img, thresh_channel_s=(170, 255)):
     return bin_saturation
 
 # Create a binary image with identified lane pixels using color and gradient thresholds
-def create_lane_pixel_images():
+def create_lane_pixel_images(img):
+    bin_x_grad = get_binary_lane_pixels_x_grad(img)
+    bin_grad_dir_mag = get_binary_lane_pixels_grad_dir_mag(img)
+    bin_saturation = get_binary_lane_pixels_color_saturation(img)
+
+    bin_combined = np.zeros_like(bin_x_grad)
+    bin_combined[(bin_x_grad == 1) | (bin_grad_dir_mag == 1) | (bin_saturation == 1)] = 1
+    img_bin_lane = bin_combined * 255
+    return img_bin_lane
+
+# Create a binary image with identified lane pixels using color and gradient thresholds
+def perform_binary_lane_pixel_image_creation():
     print_section_header("Color Transform and Gradients")
 
     images = sorted(os.listdir(undistorted_img_dir))
@@ -126,14 +142,7 @@ def create_lane_pixel_images():
         img_path = undistorted_img_dir + img_file
         img = cv2.imread(img_path)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-        bin_x_grad = get_binary_lane_pixels_x_grad(img)
-        bin_grad_dir_mag = get_binary_lane_pixels_grad_dir_mag(img)
-        bin_saturation = get_binary_lane_pixels_color_saturation(img)
-
-        bin_combined = np.zeros_like(bin_x_grad)
-        bin_combined[(bin_x_grad == 1) | (bin_grad_dir_mag == 1) | (bin_saturation == 1)] = 1
-        img_bin_lane = bin_combined * 255
+        img_bin_lane = create_lane_pixel_images(img)
 
         # Save output files
         outfile = binary_lane_dir + img_name + '.png'
@@ -177,6 +186,11 @@ def compute_perspective_transform_matrix():
     mtx_trans_inv = cv2.getPerspectiveTransform(dst_corners_fl, src_corners_fl)
     return mtx_trans, mtx_trans_inv
 
+def transform_image_perspective(img, mtx_trans):
+    img_height, img_width = img.shape[0:2]
+    img_trans = cv2.warpPerspective(img, mtx_trans, (img_width, img_height), flags=cv2.INTER_LINEAR)
+    return img_trans
+
 # Demonstrate image perspective transform
 def demonstrate_perspective_transform(img_dir, img_file, mtx_trans, output_dir=None, mark_guideline=False):
     img_path = img_dir + img_file
@@ -185,8 +199,7 @@ def demonstrate_perspective_transform(img_dir, img_file, mtx_trans, output_dir=N
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
     # Transform image perspective
-    img_height, img_width = img.shape[0:2]
-    img_trans = cv2.warpPerspective(img, mtx_trans, (img_width, img_height), flags=cv2.INTER_LINEAR)
+    img_trans = transform_image_perspective(img, mtx_trans)
 
     src_corners, dst_corners = None, None
     if mark_guideline:
@@ -277,9 +290,8 @@ def find_lane_pixel_coordinate_indices(img_height, pix_coord_x, pix_coord_y, x_b
 
 def find_lane_pixel_coordinates(img):
     # Convert img to binary
-    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    img_bin = np.zeros_like(img_gray)
-    img_bin[img_gray > img_gray.max() // 2] = 1
+    img_bin = np.zeros_like(img)
+    img_bin[img > img.max() // 2] = 1
     img_height, img_width = img_bin.shape
 
     # Find x and y coordinates of nonzero pixels
@@ -314,6 +326,15 @@ def find_fitting_polynomials(img):
     poly_fit_r = np.polyfit(coord_y_lane_r, coord_x_lane_r, 2)
     return poly_fit_l, poly_fit_r, coords_lane_l, coords_lane_r, slide_wins
 
+def color_lane_lines(img, coords_lane_l, coords_lane_r):
+    out_img = np.copy(img)
+    coord_x_lane_l, coord_y_lane_l = coords_lane_l[0], coords_lane_l[1]
+    coord_x_lane_r, coord_y_lane_r = coords_lane_r[0], coords_lane_r[1]
+    # Color left and right lane lines in red and blue respectively
+    out_img[coord_y_lane_l, coord_x_lane_l] = [255, 0, 0]
+    out_img[coord_y_lane_r, coord_x_lane_r] = [0, 0, 255]
+    return out_img
+
 def perform_lane_line_detection_images(img_dir, out_dir=None):
     print_section_header("Find Lane Lines")
 
@@ -323,11 +344,10 @@ def perform_lane_line_detection_images(img_dir, out_dir=None):
         img_name = img_file.split('.')[0]
         img_path = img_dir + img_file
         img = cv2.imread(img_path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         # Find fitting polynomials for lane lines in the image
         poly_fit_l, poly_fit_r, coords_lane_l, coords_lane_r, slide_wins = find_fitting_polynomials(img)
-        coord_x_lane_l, coord_y_lane_l = coords_lane_l[0], coords_lane_l[1]
-        coord_x_lane_r, coord_y_lane_r = coords_lane_r[0], coords_lane_r[1]
 
         print("Fitting polynomial (left)  for '{}': {:.6f}, {:.4f}, {:.1f}".format(
             img_file, poly_fit_l[0], poly_fit_l[1], poly_fit_l[2]))
@@ -349,8 +369,7 @@ def perform_lane_line_detection_images(img_dir, out_dir=None):
                 cv2.rectangle(out_img, slide_win[0], slide_win[1], (0, 255, 0), 2)
 
             # Color left and right lane lines in red and blue respectively
-            out_img[coord_y_lane_l, coord_x_lane_l] = [255, 0, 0]
-            out_img[coord_y_lane_r, coord_x_lane_r] = [0, 0, 255]
+            color_lane_lines(img, coords_lane_l, coords_lane_r)
 
             plt.imshow(out_img)
             plt.plot(x_val_l, y_val, color='yellow')
@@ -405,6 +424,7 @@ def perform_curvature_and_offset_measure(img_dir):
         img_name = img_file.split('.')[0]
         img_path = img_dir + img_file
         img = cv2.imread(img_path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img_height, img_width = img.shape[0:2]
 
         # Find fitting polynomials for lane lines in the image
@@ -420,9 +440,101 @@ def perform_curvature_and_offset_measure(img_dir):
         print("{} - Curvatures: ({:.1f} m, {:.1f} m), Offset: {:.3f} m".format(img_name, curv_l, curv_r, offset))
 
 
+#%% Step 6 - Overlay lane lines on original image
+def draw_lane_areas(img, img_height, poly_fit_l, poly_fit_r):
+    y_val = np.linspace(0, img_height - 1, num=img_height)
+    x_val_l = poly_fit_l[0] * (y_val ** 2) + poly_fit_l[1] * y_val + poly_fit_l[2]
+    x_val_r = poly_fit_r[0] * (y_val ** 2) + poly_fit_r[1] * y_val + poly_fit_r[2]
+
+    # Create an image to draw the lines on
+    zeros_one_ch = np.zeros_like(img, dtype=np.uint8)
+    img_lane_fill = np.dstack((zeros_one_ch, zeros_one_ch, zeros_one_ch))
+
+    # Recast the x and y points into usable format for cv2.fillPoly()
+    pts_l = np.expand_dims(np.transpose(np.vstack([x_val_l, y_val])), axis=0)
+    # Reverse (np.flipud()) the order of the right lane line to fill poly properly
+    pts_r = np.expand_dims(np.flipud(np.transpose(np.vstack([x_val_r, y_val]))), axis=0)
+    pts = np.hstack((pts_l, pts_r))
+
+    # Draw the lane area filled with green color
+    cv2.fillPoly(img_lane_fill, np.int_([pts]), (0, 255, 0))
+    return img_lane_fill
+
+def overlay_on_original_image(img, img_lane, mtx_trans_inv):
+    img_height, img_width = img_lane.shape[0:2]
+    # Transform the image back to the original perspective
+    img_lane_trans_back = cv2.warpPerspective(img_lane, mtx_trans_inv, (img_width, img_height))
+    # Overlay the transformed lane area on to the original image
+    img_lane_overlay = cv2.addWeighted(img, 1, img_lane_trans_back, 0.3, 0)
+    return img_lane_overlay
+
+def overlay_lane_lines(img, camera_mtx, dist_coeffs, mtx_trans, mtx_trans_inv):
+    img_height, img_width = img.shape[0:2]
+
+    # 1) Undistort image
+    img_undist = correct_image_distortion(img, camera_mtx, dist_coeffs)
+
+    # 2) Create binary lane pixel image
+    img_bin_lane = create_lane_pixel_images(img)
+
+    # 3) Transform image perspective to bird's eye view
+    img_trans = transform_image_perspective(img_bin_lane, mtx_trans)
+
+    # 4) Find fitting polynomials for lane lines in the image
+    poly_fit_l, poly_fit_r, coords_lane_l, coords_lane_r, _ = find_fitting_polynomials(img_trans)
+
+    # 5) Compute lane curvature in meters at the bottom of the image
+    curv_l = get_curvature_in_meter(poly_fit_l, img_height)
+    curv_r = get_curvature_in_meter(poly_fit_r, img_height)
+    offset = get_vehicle_offset(poly_fit_l, poly_fit_r, img_height, img_width)
+
+    # 6a) Draw lane areas (+ color lane lines)
+    img_lane_fill = draw_lane_areas(img_trans, img_height, poly_fit_l, poly_fit_r)
+    img_lane_fill = color_lane_lines(img_lane_fill, coords_lane_l, coords_lane_r)
+
+    # 6b) Overlay lane area on to the original image
+    img_overlay = overlay_on_original_image(img, img_lane_fill, mtx_trans_inv)
+
+    # 6c) Add curvature and offset text
+    text_curv = "Radius of Curvature (left, right): {:.0f}m, {:.0f}m".format(curv_l, curv_r)
+    text_offset = "Vehicle is {:.2f}m {} of center".format(np.abs(offset), 'right' if offset > 0 else 'left')
+    cv2.putText(img_overlay, text_curv, (50, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), lineType=cv2.LINE_AA)
+    cv2.putText(img_overlay, text_offset, (50, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), lineType=cv2.LINE_AA)
+
+    return img_overlay
+
+def perform_lane_overlay(img_dir, pickle_file):
+    print_section_header("Overlay Lane Lines")
+
+    # Load distortion correction parameters
+    with open(pickle_file, 'rb') as inf:
+        camera_cal = pickle.load(inf)
+    camera_mtx = camera_cal['camera_matrix']
+    dist_coeffs = camera_cal['distortion_coefficients']
+
+    # Get matrices for perspective transform and its reverse operation
+    mtx_trans, mtx_trans_inv = compute_perspective_transform_matrix()
+
+    images = sorted(os.listdir(img_dir))
+    images = [f for f in images if f.endswith('.jpg')]
+    for img_file in images:
+        img_name = img_file.split('.')[0]
+        img_path = img_dir + img_file
+        img = cv2.imread(img_path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img_overlay = overlay_lane_lines(img, camera_mtx, dist_coeffs, mtx_trans, mtx_trans_inv)
+
+        # Save output files
+        outfile = overlay_dir + img_name + '.png'
+        print("Store the lane area overlayed image to {}".format(outfile))
+        cv2.imwrite(outfile, cv2.cvtColor(img_overlay, cv2.COLOR_RGB2BGR))
+
+
 #%% Run lane detection on test images
 def detect_lane_images(steps):
     print("\n** Running lane detection on test images **")
+
+    pickle_file = results_dir + 'camera_cal.p'
 
     # Step 0 - Analyze test image
     if (not steps) or (0 in steps):
@@ -432,11 +544,11 @@ def detect_lane_images(steps):
     # Step 1 - Correct image distortion
     if (not steps) or (1 in steps):
         pickle_file = results_dir + 'camera_cal.p'
-        correct_image_distortion(pickle_file)
+        perform_distortion_correction(pickle_file)
 
     # Step 2 - Create a binary image with lane pixels
     if (not steps) or (2 in steps):
-        create_lane_pixel_images()
+        perform_binary_lane_pixel_image_creation()
 
     # Step 3 - Transform image perspective
     if (not steps) or (3 in steps):
@@ -449,6 +561,10 @@ def detect_lane_images(steps):
     # Step 5 - Measure lane curvature
     if (not steps) or (5 in steps):
         perform_curvature_and_offset_measure(perspective_trans_dir)
+
+    # Step 6 - Overlay lane lines on original image
+    if (not steps) or (6 in steps):
+        perform_lane_overlay(test_img_dir, pickle_file)
 
 
 #%% Run lane detection on provided video
