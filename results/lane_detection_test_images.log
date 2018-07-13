@@ -12,6 +12,9 @@ Image Min/Max Values: (0, 255)
 ###################################
 # Correct Image Distortions
 ###################################
+Store the undistorted image to ../output_images/undistorted/additional1.png
+Store the undistorted image to ../output_images/undistorted/additional2.png
+Store the undistorted image to ../output_images/undistorted/additional3.png
 Store the undistorted image to ../output_images/undistorted/straight_lines1.png
 Store the undistorted image to ../output_images/undistorted/straight_lines2.png
 Store the undistorted image to ../output_images/undistorted/test1.png
@@ -24,6 +27,9 @@ Store the undistorted image to ../output_images/undistorted/test6.png
 ###################################
 # Color Transform and Gradients
 ###################################
+Store the binary lane image to ../output_images/binary_lanes/additional1.png
+Store the binary lane image to ../output_images/binary_lanes/additional2.png
+Store the binary lane image to ../output_images/binary_lanes/additional3.png
 Store the binary lane image to ../output_images/binary_lanes/straight_lines1.png
 Store the binary lane image to ../output_images/binary_lanes/straight_lines2.png
 Store the binary lane image to ../output_images/binary_lanes/test1.png
@@ -36,6 +42,12 @@ Store the binary lane image to ../output_images/binary_lanes/test6.png
 ###################################
 # Transform Image Perspective
 ###################################
+Store the perspective transform result image to ../output_images/perspective/marked/additional1.png
+Store the perspective transform source image to ../output_images/perspective/marked/additional1_src.png
+Store the perspective transform result image to ../output_images/perspective/marked/additional2.png
+Store the perspective transform source image to ../output_images/perspective/marked/additional2_src.png
+Store the perspective transform result image to ../output_images/perspective/marked/additional3.png
+Store the perspective transform source image to ../output_images/perspective/marked/additional3_src.png
 Store the perspective transform result image to ../output_images/perspective/marked/straight_lines1.png
 Store the perspective transform source image to ../output_images/perspective/marked/straight_lines1_src.png
 Store the perspective transform result image to ../output_images/perspective/marked/straight_lines2.png
@@ -52,6 +64,12 @@ Store the perspective transform result image to ../output_images/perspective/mar
 Store the perspective transform source image to ../output_images/perspective/marked/test5_src.png
 Store the perspective transform result image to ../output_images/perspective/marked/test6.png
 Store the perspective transform source image to ../output_images/perspective/marked/test6_src.png
+Store the perspective transform result image to ../output_images/perspective/marked_bin/additional1.png
+Store the perspective transform source image to ../output_images/perspective/marked_bin/additional1_src.png
+Store the perspective transform result image to ../output_images/perspective/marked_bin/additional2.png
+Store the perspective transform source image to ../output_images/perspective/marked_bin/additional2_src.png
+Store the perspective transform result image to ../output_images/perspective/marked_bin/additional3.png
+Store the perspective transform source image to ../output_images/perspective/marked_bin/additional3_src.png
 Store the perspective transform result image to ../output_images/perspective/marked_bin/straight_lines1.png
 Store the perspective transform source image to ../output_images/perspective/marked_bin/straight_lines1_src.png
 Store the perspective transform result image to ../output_images/perspective/marked_bin/straight_lines2.png
@@ -68,6 +86,9 @@ Store the perspective transform result image to ../output_images/perspective/mar
 Store the perspective transform source image to ../output_images/perspective/marked_bin/test5_src.png
 Store the perspective transform result image to ../output_images/perspective/marked_bin/test6.png
 Store the perspective transform source image to ../output_images/perspective/marked_bin/test6_src.png
+Store the perspective transform result image to ../output_images/perspective/additional1.png
+Store the perspective transform result image to ../output_images/perspective/additional2.png
+Store the perspective transform result image to ../output_images/perspective/additional3.png
 Store the perspective transform result image to ../output_images/perspective/straight_lines1.png
 Store the perspective transform result image to ../output_images/perspective/straight_lines2.png
 Store the perspective transform result image to ../output_images/perspective/test1.png
@@ -80,46 +101,61 @@ Store the perspective transform result image to ../output_images/perspective/tes
 ###################################
 # Find Lane Lines
 ###################################
-Fitting polynomial (left)  for 'straight_lines1.png': -0.000026, 0.0163, 340.8
-Fitting polynomial (right) for 'straight_lines1.png': -0.000106, 0.1027, 933.7
+Fitting polynomial (left)  for 'additional1.png': -0.000099, 0.0451, 391.7
+Fitting polynomial (right) for 'additional1.png': 0.000336, -0.4675, 1180.2
+Store the slide window lane detected image to ../output_images/slide_win/additional1.png
+Fitting polynomial (left)  for 'additional2.png': 0.000501, -0.7420, 593.3
+Fitting polynomial (right) for 'additional2.png': 0.000911, -1.0243, 1235.6
+Store the slide window lane detected image to ../output_images/slide_win/additional2.png
+Fitting polynomial (left)  for 'additional3.png': 0.000444, -0.6637, 555.9
+Fitting polynomial (right) for 'additional3.png': 0.000670, -0.8814, 1232.9
+Store the slide window lane detected image to ../output_images/slide_win/additional3.png
+Fitting polynomial (left)  for 'straight_lines1.png': -0.000009, 0.0085, 340.0
+Fitting polynomial (right) for 'straight_lines1.png': -0.000117, 0.1112, 932.5
 Store the slide window lane detected image to ../output_images/slide_win/straight_lines1.png
-Fitting polynomial (left)  for 'straight_lines2.png': -0.000099, 0.1036, 316.5
-Fitting polynomial (right) for 'straight_lines2.png': -0.000042, 0.0208, 969.0
+Fitting polynomial (left)  for 'straight_lines2.png': 0.000038, -0.0121, 337.0
+Fitting polynomial (right) for 'straight_lines2.png': -0.000040, 0.0174, 970.0
 Store the slide window lane detected image to ../output_images/slide_win/straight_lines2.png
-Fitting polynomial (left)  for 'test1.png': 0.000405, -0.5029, 518.4
-Fitting polynomial (right) for 'test1.png': 0.000440, -0.5673, 1190.7
+Fitting polynomial (left)  for 'test1.png': 0.000376, -0.4597, 505.3
+Fitting polynomial (right) for 'test1.png': 0.000358, -0.5070, 1182.6
 Store the slide window lane detected image to ../output_images/slide_win/test1.png
-Fitting polynomial (left)  for 'test2.png': -0.000396, 0.5748, 190.7
-Fitting polynomial (right) for 'test2.png': -0.000484, 0.6540, 791.3
+Fitting polynomial (left)  for 'test2.png': -0.000432, 0.6038, 184.4
+Fitting polynomial (right) for 'test2.png': -0.000489, 0.6550, 790.7
 Store the slide window lane detected image to ../output_images/slide_win/test2.png
-Fitting polynomial (left)  for 'test3.png': 0.000296, -0.5442, 597.9
-Fitting polynomial (right) for 'test3.png': 0.000295, -0.4982, 1193.1
+Fitting polynomial (left)  for 'test3.png': 0.000368, -0.6000, 606.7
+Fitting polynomial (right) for 'test3.png': 0.000248, -0.4581, 1186.7
 Store the slide window lane detected image to ../output_images/slide_win/test3.png
-Fitting polynomial (left)  for 'test4.png': 0.000193, -0.2492, 461.4
-Fitting polynomial (right) for 'test4.png': 0.000344, -0.4500, 1162.8
+Fitting polynomial (left)  for 'test4.png': 0.000191, -0.2512, 462.6
+Fitting polynomial (right) for 'test4.png': 0.000290, -0.4263, 1168.1
 Store the slide window lane detected image to ../output_images/slide_win/test4.png
-Fitting polynomial (left)  for 'test5.png': 0.000377, -0.5277, 495.3
-Fitting polynomial (right) for 'test5.png': 0.000620, -0.7150, 1203.6
+Fitting polynomial (left)  for 'test5.png': 0.000499, -0.5807, 484.5
+Fitting polynomial (right) for 'test5.png': 0.000724, -0.7767, 1204.2
 Store the slide window lane detected image to ../output_images/slide_win/test5.png
-Fitting polynomial (left)  for 'test6.png': 0.000127, -0.3948, 584.9
-Fitting polynomial (right) for 'test6.png': 0.000116, -0.3383, 1187.4
+Fitting polynomial (left)  for 'test6.png': 0.000048, -0.3314, 574.5
+Fitting polynomial (right) for 'test6.png': 0.000210, -0.4139, 1200.8
 Store the slide window lane detected image to ../output_images/slide_win/test6.png
 
 ###################################
 # Measure Curvature and Offset
 ###################################
-straight_lines1 - Curvatures: (5867.5 m, 1422.9 m), Offset: -0.035 m
-straight_lines2 - Curvatures: (1511.9 m, 3567.5 m), Offset: -0.063 m
-test1 - Curvatures: (371.0 m, 341.0 m), Offset: -0.279 m
-test2 - Curvatures: (379.0 m, 310.0 m), Offset: -0.377 m
-test3 - Curvatures: (507.4 m, 509.3 m), Offset: -0.193 m
-test4 - Curvatures: (776.1 m, 437.0 m), Offset: -0.345 m
-test5 - Curvatures: (398.4 m, 242.2 m), Offset: -0.119 m
-test6 - Curvatures: (1185.5 m, 1292.0 m), Offset: -0.262 m
+additional1 - Curvatures: (1522.0 m, 447.5 m), Offset: -0.320 m
+additional2 - Curvatures: (300.0 m, 165.2 m), Offset: -0.026 m
+additional3 - Curvatures: (337.9 m, 224.3 m), Offset: 0.076 m
+straight_lines1 - Curvatures: (16579.5 m, 1280.2 m), Offset: -0.038 m
+straight_lines2 - Curvatures: (3961.7 m, 3749.8 m), Offset: -0.086 m
+test1 - Curvatures: (399.9 m, 419.3 m), Offset: -0.267 m
+test2 - Curvatures: (347.3 m, 307.2 m), Offset: -0.358 m
+test3 - Curvatures: (407.8 m, 605.7 m), Offset: -0.205 m
+test4 - Curvatures: (784.7 m, 517.7 m), Offset: -0.325 m
+test5 - Curvatures: (301.3 m, 207.9 m), Offset: -0.188 m
+test6 - Curvatures: (3166.1 m, 714.2 m), Offset: -0.267 m
 
 ###################################
 # Overlay Lane Lines
 ###################################
+Store the lane area overlayed image to ../output_images/overlay/additional1.png
+Store the lane area overlayed image to ../output_images/overlay/additional2.png
+Store the lane area overlayed image to ../output_images/overlay/additional3.png
 Store the lane area overlayed image to ../output_images/overlay/straight_lines1.png
 Store the lane area overlayed image to ../output_images/overlay/straight_lines2.png
 Store the lane area overlayed image to ../output_images/overlay/test1.png

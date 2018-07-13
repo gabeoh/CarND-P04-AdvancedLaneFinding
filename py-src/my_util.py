@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from moviepy.editor import VideoFileClip
 
 def print_section_header(title, len_banner=35):
     """
@@ -22,3 +23,11 @@ def analyze_test_image(img_path):
 
 def compute_curvature_poly2(A, B, y_eval):
     return ((1 + (2 * A * y_eval + B)**2)**1.5) / np.abs(2*A)
+
+def capture_frame(video_path, t, out_file):
+    clip = VideoFileClip(video_path)
+    clip.save_frame(out_file, t)
+
+# capture_frame('../test_videos/project_video.mp4', 39.6, '../test_images/additional1.jpg')
+# capture_frame('../test_videos/project_video.mp4', 41.5, '../test_images/additional2.jpg')
+# capture_frame('../test_videos/project_video.mp4', 41.6, '../test_images/additional3.jpg')

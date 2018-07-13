@@ -15,7 +15,7 @@ def find_lane_pixel_coordinate_indices(img_height, pix_coord_x, pix_coord_y, x_b
     # Sliding window width: +/- wind_margin
     win_margin = 100
     # Minimum number of pixels to re-center sliding window
-    th_recenter_min_pix = 50
+    th_recenter_min_pix = 100
 
     inds_lane_pix_l, inds_lane_pix_r = [], []
     slide_wins = []
@@ -65,8 +65,8 @@ def find_lane_pixel_coordinates(img):
     hist_x = np.sum(img_bin[mid_y:, :], axis=0)
     # Disregard 1/8th of each side when determining the base x coordinates
     offset_disregard = img_width // 8
-    x_base_l = np.argmax(hist_x[offset_disregard:mid_x]) + offset_disregard
-    x_base_r = np.argmax(hist_x[mid_x:-offset_disregard]) + mid_x
+    x_base_l = np.argmax(hist_x[offset_disregard:mid_x - offset_disregard]) + offset_disregard
+    x_base_r = np.argmax(hist_x[mid_x + offset_disregard:-offset_disregard]) + mid_x + offset_disregard
 
     # Find lane pixel coordinate indices
     inds_lane_pix_l, inds_lane_pix_r, slide_wins = find_lane_pixel_coordinate_indices(

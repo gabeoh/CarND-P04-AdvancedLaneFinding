@@ -206,8 +206,8 @@ under
 An example image is shown below.
 
 **Lane Detected Image** - _test3.png_
-- f(y)<sub>left</sub> = 0.000296y<sup>2</sup> - 0.5442y + 597.9
-- f(y)<sub>right</sub> = 0.000295y<sup>2</sup> - 0.4982y + 1193.1
+- f(y)<sub>left</sub> = 0.000368y<sup>2</sup> - 0.6000y + 606.7
+- f(y)<sub>right</sub> = 0.000248y<sup>2</sup> - 0.4581y + 1186.7
 ![test3.png][img_slide_win_test_03]
 
 
@@ -239,14 +239,14 @@ each test image.
 
 | Image File        | Curvature Left  | Curvature Right | Position Offset |
 |:-----------------:|:---------------:|:---------------:|:---------------:|
-| straight_lines1   | 5867.5 m        | 1422.9 m        | -0.035 m        |
-| straight_lines2   | 1511.9 m        | 3567.5 m        | -0.063 m        |
-| test1             | 371.0 m         | 341.0 m         | -0.279 m        |
-| test2             | 379.0 m         | 310.0 m         | -0.377 m        |
-| test3             | 507.4 m         | 509.3 m         | -0.193 m        |
-| test4             | 776.1 m         | 437.0 m         | -0.345 m        |
-| test5             | 398.4 m         | 242.2 m         | -0.119 m        |
-| test6             | 1185.5 m        | 1292.0 m        | -0.262 m        |
+| straight_lines1   | 16579.5 m       | 1280.2 m        | -0.038 m        |
+| straight_lines2   | 3961.7 m        | 3749.8 m        | -0.086 m        |
+| test1             | 399.9 m         | 419.3 m         | -0.267 m        |
+| test2             | 347.3 m         | 307.2 m         | -0.358 m        |
+| test3             | 407.8 m         | 605.7 m         | -0.205 m        |
+| test4             | 784.7 m         | 517.7 m         | -0.325 m        |
+| test5             | 301.3 m         | 207.9 m         | -0.188 m        |
+| test6             | 3166.1 m        | 714.2 m        | -0.267 m        |
 
 
 ### 6. Overlay Detected Lane Lines on Original Image
