@@ -36,14 +36,7 @@ successfully meet the project goal.
 [img_pt_src_bin_test_03]: ./output_images/perspective/marked_bin/test3_src.png
 [img_pt_dst_bin_test_03]: ./output_images/perspective/marked_bin/test3.png
 [img_slide_win_test_03]: ./output_images/slide_win/test3.png
-
-[image1]: ./examples/undistort_output.png "Undistorted"
-[image2]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
+[img_overlay_test_03]: ./output_images/overlay/test3.png
 
 
 ---
@@ -51,7 +44,7 @@ successfully meet the project goal.
 
 ### 1. Camera Matrix and Distortion Coefficients
 The source code for the camera calibration is located in
-[py-src/p05_01_camera_calibration.py](py-src/p05_01_camera_calibration.py).
+[py-src/p05_00_camera_calibration.py](py-src/p05_00_camera_calibration.py).
 
 #### Find chessboard corners _`(Line: 35-66)`_
 First, _object points_ are prepared for the chessboard with 9x6 inner corners.
@@ -65,7 +58,7 @@ The `camera_mtx` and `dist_coeffs` are computed using
 `cv2.calibrateCamera()` function with `objpoints` and `imgpoints` collected
 in the above step.
 
-#### Undistort Images _`(Line: 79-98)`_
+#### Undistort Images _`(Line: 93-114)`_
 The distortion correction is carried out by applying `cv2.undistort()`
 function using camera matrix and distortion coefficient computed above.
 
@@ -103,9 +96,8 @@ horizontal line near the bottom of the image.
 
 
 ### 2. Create Lane Pixel Images
-The source code for creating lane pixel images is located at
-`Line 66-141` of 
-[py-src/p05_02_lane_detection.py](py-src/p05_02_lane_detection.py).
+The source code for creating lane pixel images is in
+[py-src/p05_02_create_binary_lane.py](py-src/p05_02_create_binary_lane.py).
 
 A combination of gradient and color thresholds is used to create binary
 image files that contain lane pixels.
@@ -140,9 +132,8 @@ An example image is shown below.
 
 
 ### 3. Perspective Transform
-The source code for the perspective transform is located at
-`Line 144-231` of 
-[py-src/p05_02_lane_detection.py](py-src/p05_02_lane_detection.py).
+The source code for the perspective transform is located in
+[py-src/p05_03_perspective_transform.py](py-src/p05_03_perspective_transform.py)
 
 First, the source corners for the perspective transform are found using
 undistorted version of the two straight lane line test images
@@ -192,9 +183,8 @@ Examples of the transformation are shown below.
 
 
 ### 4. Identify Lane-Line Pixels
-The source code for the lane-line pixel identification is located at
-`Line 234-362` of 
-[py-src/p05_02_lane_detection.py](py-src/p05_02_lane_detection.py).
+The source code for the lane-line pixel identification is located in
+[py-src/p05_04_identify_lane_line.py](py-src/p05_04_identify_lane_line.py).
 
 Histogram and sliding window methods are used to identify lane-line pixels
 in the test images.
@@ -225,8 +215,8 @@ An example image is shown below.
 
 ### 5. Calculate Lane Curvature and Vehicle Position
 The implementation of calculating lane curvature and vehicle position
-is located at `Line 365-419` of 
-[py-src/p05_02_lane_detection.py](py-src/p05_02_lane_detection.py).
+is located in
+[py-src/p05_05_curvature_offset.py](py-src/p05_05_curvature_offset.py).
 
 The radius of lane curvature is calculated in meters at the bottom of
 the image.  In assumption of the lane width of 3.7m (over 640 pixels) and
@@ -258,78 +248,93 @@ each test image.
 | test6             | 1185.5 m        | 1292.0 m        | -0.262 m        |
 
 
-
 ### 6. Overlay Detected Lane Lines on Original Image
-**Provide an example image of your result plotted back down onto the road 
-such that the lane area is identified clearly.**
+The source code for the lane area overlaying is located in
+[py-src/p05_06_overlay_annotate.py](py-src/p05_06_overlay_annotate.py).
 
-_The fit from the rectified image has been warped back onto the original 
-image and plotted to identify the lane boundaries. This should demonstrate 
-that the lane boundaries were correctly identified. An example image with 
-lanes, curvature, and position from center should be included in the writeup 
-(or saved to a folder) and submitted with the project._
+The lane area and lane line pixels identified from previous steps are filled
+with distinct colors (green for lane area, red and blue for left and right 
+lane lines respectively).  Then, the highlight image is warped back to the
+original image perspective and overlayed onto the undistorted version of the
+original image.
 
-I implemented this step in lines # through # in my code in 
-`yet_another_file.py` in the function `map_lane()`.  Here is an example 
-of my result on a test image:
+In addition, the radius of the lane curvature and vehicle offset are included
+in the resulting images.
 
-![alt text][image6]
+The original images (undistorted) with lane area highlighted are located under
+[output_images/overlay/](output_images/overlay/) directory.
+An example image is shown below.
+
+**Lane Overlay Image** - _test3.png_
+![test3.png][img_overlay_test_03]
 
 
 ---
 ## Lane Detection on Video
 
 ### 1. Apply Lane Detection on Video
-**Provide a link to your final video output. Your pipeline should perform 
-reasonably well on the entire project video (wobbly lines are ok but no 
-catastrophic failures that would cause the car to drive off the road!)**
-
-_The image processing pipeline that was established to find the lane lines 
-in images successfully processes the video. The output here should be a new 
-video where the lanes are identified in every frame, and outputs are 
-generated regarding the radius of curvature of the lane and vehicle position 
-within the lane. The pipeline should correctly map out curved lines and not 
-fail when shadows or pavement color changes are present. The output video 
-should be linked to in the writeup and/or saved and submitted with the project._
-
-Here's a [link to my video result](./project_video.mp4)
+This a link to the final video output:
+- [project_video.mp4](./output_images/video/project_video.mp4)
 
 
-### 2. Utilize Previous Detection _(Standout)_
-_For a standout submission, you should follow the suggestion in the lesson to 
-not just search blindly for the lane lines in each frame of video, but rather, 
-once you have a high-confidence detection, use that to inform the search for 
-the position of the lines in subsequent frames of video. For example, if a 
-polynomial fit was found to be robust in the previous frame, then rather than 
-search the entire next frame for the lines, just a window around the previous 
-detection could be searched. This will improve speed and provide a more robust 
-method for rejecting outliers._
+### 2. Challenging Videos
+I tried running the pipeline on two provided challenging videos.
+Unfortunately, the pipeline did not perform well on these videos.
+The implementation limitation and potential improvements are discussed in the
+following section.
 
-### 3. Outlier Rejection _(Standout)_
-_For an additional improvement you should implement outlier rejection and use 
-a low-pass filter to smooth the lane detection over frames, meaning add each 
-new detection to a weighted mean of the position of the lines to avoid jitter._
-
-### 4. Challenging Video _(Standout)_
-_If you really want to go above and beyond, implement these methods on the 
-challenge videos as well, or on your own videos you've recorded yourself._
+These are links to the results from challenging videos:
+- [challenge_video.mp4](./output_images/video/challenge_video.mp4)
+- [harder_challenge_video.mp4](./output_images/video/harder_challenge_video.mp4)
 
 
 ---
 ## Discussion
 
 ### 1. Limitation and Future Works
-**Briefly discuss any problems / issues you faced in your implementation of 
-this project. Where will your pipeline likely fail? What could you do to make 
-it more robust?**
 
-_Discussion includes some consideration of problems/issues faced, what 
-could be improved about their algorithm/pipeline, and what hypothetical 
-cases would cause their pipeline to fail._
+#### Lane Line Pixel Detection Error
+One of the most prominent problems I noticed in the challenging videos is
+that the incorrect recognition of lane line pixels.  For example, in
+`challenge_video.mp4`, the road divider exists on the far left of the
+left lane lines.  However, the pipeline often confused the shadow boundaries
+of the divider as lane lines.
 
-Here I'll talk about the approach I took, what techniques I used, what 
-worked and why, where the pipeline might fail and how I might improve it if 
-I were going to pursue this project further.  
+Similarly, certain road pavement irregularity also contributed the the
+detection error.  Some parts of `challenge_video.mp4` has lane pavement
+shade differences.  Especially when this boundary runs in parallel direction
+with lane lines in their proximity, the pipeline occasionally confuses the
+boundaries as lane lines.
+
+This is a limitation of the gradient based lane line pixel identification
+in step 2.  More studies on the characteristics of lane lines and other common
+distractors are required to improve this pipeline step.
+
+#### Road Slopes
+Another challenge is with road slopes.  The perspective transform algorithm
+used in the pipeline assumes that the road surface is relatively flat.
+Therefore, for the road with higher slope angles such as in
+`harder_challenge_video.mp4`, the pipeline did not perform ideally. 
+
+#### Steep Curves
+The `harder_challenge_video.mp4` also contains steep curves where one of the
+lane lines completely disappears from the view.  The implemented lane line
+recognition algorithm assumes two lane lines on the left and the right
+from the center.  Such steep curves break this assumption and causes the
+pipeline to behave inaccurately.
+
+A similar problem can occur when the vehicle goes too far from the center
+of the lane although the test video did not exhibit such behavior.
+Even if the lane lines do not completely disappear from the view, it is
+possible that they are not fully represented in the perspective transformed
+images.
+
+#### Other Potential Improvements
+Further improvement can be made to the pipeline by considering cross-frame
+relations.  By utilizing results (such as polynomial fit) from previous frames, 
+the pipeline can improve its performance (speed).  This information can also
+be used to reject outliers, which would reduce jitters and smoothen lane
+detections.
 
 
 ---
@@ -337,9 +342,15 @@ I were going to pursue this project further.
 ### 1. Source and Outputs
 #### Source Code
 - Camera Calibration 
-  - [p05_01_camera_calibration.py](py-src/p05_01_camera_calibration.py)
+  - [p05_01_camera_calibration.py](py-src/p05_00_camera_calibration.py)
 - Lane Detection 
-  - [p05_02_lane_detection.py](py-src/p05_02_lane_detection.py)
+  - [p05_lane_detection_main.py](py-src/p05_lane_detection_main.py)
+  - [p05_01_correct_distortion.py](py-src/p05_01_correct_distortion.py)
+  - [p05_02_create_binary_lane.py](py-src/p05_02_create_binary_lane.py)
+  - [p05_03_perspective_transform.py](py-src/p05_03_perspective_transform.py)
+  - [p05_04_identify_lane_line.py](py-src/p05_04_identify_lane_line.py)
+  - [p05_05_curvature_offset.py](py-src/p05_05_curvature_offset.py)
+  - [p05_06_overlay_annotate.py](py-src/p05_06_overlay_annotate.py)
 
 #### Execution Log
 - Camera Calibration 
@@ -349,12 +360,18 @@ I were going to pursue this project further.
 
 #### Output Images
 - Camera Calibration
-  - [output_images/calibration](output_images/calibration)
+  - [output_images/calibration/](output_images/calibration/)
 - Distortion Correction
-  - [output_images/undistorted](output_images/undistorted)
+  - [output_images/undistorted/](output_images/undistorted/)
 - Binary Lane Pixels
-  - [output_images/binary_lanes](output_images/binary_lanes)
+  - [output_images/binary_lanes/](output_images/binary_lanes/)
 - Perspective Transform
-  - [output_images/perspective](output_images/perspective)
+  - [output_images/perspective/](output_images/perspective/)
 - Lane Identified Images (sliding windows)
   - [output_images/slide_win/](output_images/slide_win/)
+- Lane Overlay
+  - [output_images/overlay/](output_images/overlay/)
+  
+#### Output Videos
+- Videos
+  - [output_images/video/](output_images/video/)

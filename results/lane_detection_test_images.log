@@ -1,11 +1,11 @@
-Running lane detection with arguments: Namespace(run_image=True, run_video=False, steps=[])
+Running lane detection with arguments: Namespace(files=None, run_image=True, run_video=False, steps=[])
 
 ** Running lane detection on test images **
 
 ###################################
 # Test Images
 ###################################
-Sample Image: ../test_images/test3.jpg
+Image File: ../test_images/test3.jpg
 Image Size: 1280x720
 Image Min/Max Values: (0, 255)
 
@@ -96,7 +96,7 @@ Fitting polynomial (left)  for 'test3.png': 0.000296, -0.5442, 597.9
 Fitting polynomial (right) for 'test3.png': 0.000295, -0.4982, 1193.1
 Store the slide window lane detected image to ../output_images/slide_win/test3.png
 Fitting polynomial (left)  for 'test4.png': 0.000193, -0.2492, 461.4
-Fitting polynomial (right) for 'test4.png': -0.001081, 0.6445, 1166.1
+Fitting polynomial (right) for 'test4.png': 0.000344, -0.4500, 1162.8
 Store the slide window lane detected image to ../output_images/slide_win/test4.png
 Fitting polynomial (left)  for 'test5.png': 0.000377, -0.5277, 495.3
 Fitting polynomial (right) for 'test5.png': 0.000620, -0.7150, 1203.6
@@ -113,6 +113,18 @@ straight_lines2 - Curvatures: (1511.9 m, 3567.5 m), Offset: -0.063 m
 test1 - Curvatures: (371.0 m, 341.0 m), Offset: -0.279 m
 test2 - Curvatures: (379.0 m, 310.0 m), Offset: -0.377 m
 test3 - Curvatures: (507.4 m, 509.3 m), Offset: -0.193 m
-test4 - Curvatures: (776.1 m, 142.2 m), Offset: -0.497 m
+test4 - Curvatures: (776.1 m, 437.0 m), Offset: -0.345 m
 test5 - Curvatures: (398.4 m, 242.2 m), Offset: -0.119 m
 test6 - Curvatures: (1185.5 m, 1292.0 m), Offset: -0.262 m
+
+###################################
+# Overlay Lane Lines
+###################################
+Store the lane area overlayed image to ../output_images/overlay/straight_lines1.png
+Store the lane area overlayed image to ../output_images/overlay/straight_lines2.png
+Store the lane area overlayed image to ../output_images/overlay/test1.png
+Store the lane area overlayed image to ../output_images/overlay/test2.png
+Store the lane area overlayed image to ../output_images/overlay/test3.png
+Store the lane area overlayed image to ../output_images/overlay/test4.png
+Store the lane area overlayed image to ../output_images/overlay/test5.png
+Store the lane area overlayed image to ../output_images/overlay/test6.png

@@ -1,0 +1,31 @@
+Running lane detection with arguments: Namespace(files=None, run_image=False, run_video=True, steps=[])
+
+** Running lane detection on video files **
+Video Files:  []
+
+############################################################
+# Run lane detection on video - challenge_video.mp4
+############################################################
+[MoviePy] >>>> Building video ../output_images/video/challenge_video.mp4
+[MoviePy] Writing video ../output_images/video/challenge_video.mp4
+[MoviePy] Done.
+[MoviePy] >>>> Video ready: ../output_images/video/challenge_video.mp4 
+
+
+############################################################
+# Run lane detection on video - harder_challenge_video.mp4
+############################################################
+[MoviePy] >>>> Building video ../output_images/video/harder_challenge_video.mp4
+[MoviePy] Writing video ../output_images/video/harder_challenge_video.mp4
+[MoviePy] Done.
+[MoviePy] >>>> Video ready: ../output_images/video/harder_challenge_video.mp4 
+
+
+############################################################
+# Run lane detection on video - project_video.mp4
+############################################################
+[MoviePy] >>>> Building video ../output_images/video/project_video.mp4
+[MoviePy] Writing video ../output_images/video/project_video.mp4
+[MoviePy] Done.
+[MoviePy] >>>> Video ready: ../output_images/video/project_video.mp4 
+
