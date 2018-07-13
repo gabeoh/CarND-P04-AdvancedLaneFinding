@@ -1,7 +1,5 @@
 # Advanced Lane Finding
 
-In this project, your goal is to write a software pipeline to identify the lane boundaries in a video from a front-facing camera on a car.
-
 ## Objective
 
 The goal of this project is to identify lane boundaries from a front-facing

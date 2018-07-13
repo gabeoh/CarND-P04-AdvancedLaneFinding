@@ -1,39 +1,99 @@
-## Advanced Lane Finding
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+# CarND-P04-AdvancedLaneFinding
+
+CarND-P04-AdvancedLaneFinding implements a pipeline to detect lane lines
+from images and video streams. 
+
+## File Structure
+### Project Requirements
+- **[py-src/](py-src/)** - Contains Python source codes that implement the
+    pipeline
+- **[output_images/](output_images/)** - Contains resulting output images and
+    videos for each pipeline step
+- **[writeup_report.md](writeup_report.md)** - Project write-up report
+
+### Additional Files
+- **[results/](results/)** - Project outputs such as pickle and execution
+    log files
+- **[camera_cal/](camera_cal/)** - 
+- **[test_images/](test_images/)** - 
+- **[test_videos/](test_videos/)** - 
 
 
-In this project, your goal is to write a software pipeline to identify the lane boundaries in a video, but the main output or product we want you to create is a detailed writeup of the project.  Check out the [writeup template](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup.  
+## Getting Started
+### [Download ZIP](https://github.com/gabeoh/CarND-P04-AdvancedLaneFinding/archive/master.zip) or Git Clone
+```
+git clone https://github.com/gabeoh/CarND-P04-AdvancedLaneFinding.git
+```
 
-Creating a great writeup:
----
-A great writeup should include the rubric points as well as your description of how you addressed each point.  You should include a detailed description of the code used in each step (with line-number references and code snippets where necessary), and links to other supporting documents or external references.  You should include images in your writeup to demonstrate how your code works with examples.  
+### Setup Environment
 
-All that said, please be concise!  We're not looking for you to write a book here, just a brief description of how you passed each rubric point, and references to the relevant code :). 
+You can set up the environment following
+[CarND-Term1-Starter-Kit - Miniconda](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/doc/configure_via_anaconda.md).
+This will install following packages required to run this application.
 
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup.
+- Miniconda
+- Python
+- Jupyter Notebook
 
-The Project
----
+### Download Simulator
+- [Linux](https://d17h27t6h515a5.cloudfront.net/topher/2017/February/58ae46bb_linux-sim/linux-sim.zip)
+- [MacOS](https://d17h27t6h515a5.cloudfront.net/topher/2017/February/58ae4594_mac-sim.app/mac-sim.app.zip)
+- [Windows](https://d17h27t6h515a5.cloudfront.net/topher/2017/February/58ae4419_windows-sim/windows-sim.zip)
 
-The goals / steps of this project are the following:
 
-* Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
-* Apply a distortion correction to raw images.
-* Use color transforms, gradients, etc., to create a thresholded binary image.
-* Apply a perspective transform to rectify binary image ("birds-eye view").
-* Detect lane pixels and fit to find the lane boundary.
-* Determine the curvature of the lane and vehicle position with respect to center.
-* Warp the detected lane boundaries back onto the original image.
-* Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
+### Usage
 
-The images for camera calibration are stored in the folder called `camera_cal`.  The images in `test_images` are for testing your pipeline on single frames.  If you want to extract more test images from the videos, you can simply use an image writing method like `cv2.imwrite()`, i.e., you can read the video in frame by frame as usual, and for frames you want to save for later you can write to an image file.  
+#### Run Camera Calibration
+Using calibration images under `camera_cal`, compute camera matrix and
+distortion coefficients.  The resulting data is stored as a pickle file
+`results/camera_cal.p`.
 
-To help the reviewer examine your work, please save examples of the output from each stage of your pipeline in the folder called `output_images`, and include a description in your writeup for the project of what each image shows.    The video called `project_video.mp4` is the video your pipeline should work well on.  
+```
+$ cd py-src
 
-The `challenge_video.mp4` video is an extra (and optional) challenge for you if you want to test your pipeline under somewhat trickier conditions.  The `harder_challenge.mp4` video is another optional challenge and is brutal!
+$ python p05_00_camera_calibration.py
+```
 
-If you're feeling ambitious (again, totally optional though), don't stop there!  We encourage you to go out and take video of your own, calibrate your camera and show us how you would implement this project from scratch!
+#### Run Lane Detection on Test Images
+```
+$ cd py-src
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+$ python p05_lane_detection_main.py --image
+or
+$ python p05_lane_detection_main.py -i
+```
 
+You can also run only specific steps.  For example, run only step 3
+perspective transform and step 4 lane line identification.
+```
+$ python p05_lane_detection_main.py -i 3 4
+```
+
+More information on running option can be found by running:
+```
+$ python p05_lane_detection_main.py -h
+```
+
+#### Run Lane Detection on Test Videos
+```
+$ cd py-src
+
+$ python p05_lane_detection_main.py --video
+or
+$ python p05_lane_detection_main.py -v
+```
+
+You can also run on only specific video files.  For example, run the pipeline
+only on project video.
+```
+$ python p05_lane_detection_main.py -v -f project_video.mp4
+```
+
+More information on running option can be found by running:
+```
+$ python p05_lane_detection_main.py -h
+```
+
+
+## License
+Licensed under [MIT](LICENSE) License.
