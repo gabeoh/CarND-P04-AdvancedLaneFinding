@@ -14,9 +14,9 @@ from images and video streams.
 ### Additional Files
 - **[results/](results/)** - Project outputs such as pickle and execution
     log files
-- **[camera_cal/](camera_cal/)** - 
-- **[test_images/](test_images/)** - 
-- **[test_videos/](test_videos/)** - 
+- **[camera_cal/](camera_cal/)** - Provided camera calibration images
+- **[test_images/](test_images/)** - Provided lane detection test images
+- **[test_videos/](test_videos/)** - Provided lane detection test videos
 
 
 ## Getting Started

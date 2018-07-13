@@ -83,7 +83,7 @@ step.  The corrected images are stored in
 [output_images/undistorted](output_images/undistorted)
 directory.
 
-As shown in the example below, the distortion correction is prominent for the
+As shown in the example below, the distortion correction is noticeable for the
 horizontal line near the bottom of the image.
 
 #### Original Test Image (test3.jpg)
@@ -149,7 +149,7 @@ The table below shows the coordinates of source and destination corners:
 | Bottom Left   | 180, 720      | 320, 720      |
 
 With these source and destination corner coordinates, the perspective
-transform matrix (and it inverse transform) is computed using
+transform matrix (and its inverse transform) is computed using
 `cv2.getPerspectiveTransform()` function.
 
 The computed transform matrix is verified on test images.
@@ -192,10 +192,10 @@ lines are determined using the histogram on the bottom half of the image
 (x coordinates with maximum non-zero pixel occurrence).
 
 Then, the image is divided into 9 vertical sections for the sliding window
-method.  The x coordinates from histogram are used as initial window center
-for the bottom window.  Subsequent window centers are set to the mean of
-valid pixels' x-coordinates in the previous window by sliding windows from
-the bottom to the top of the test images.
+method.  The x coordinates from histogram are used as initial x-coordinates
+for the bottom sliding windows.  Subsequent window coordinates are set to the
+mean of valid pixels' x-coordinates in the previous window while sliding windows
+from the bottom to the top of the test images.
 
 Once all lane line pixels are identified, the 2nd order polynomial is used
 to characterize the lane lines. 
@@ -216,14 +216,17 @@ The implementation of calculating lane curvature and vehicle position
 is located in
 [py-src/p05_05_curvature_offset.py](py-src/p05_05_curvature_offset.py).
 
-The radius of lane curvature is calculated in meters at the bottom of
-the image.  In assumption of the lane width of 3.7m (over 640 pixels) and
-the length of 30m (over 720 pixels), 3.7/640 and 30/720 meters
-per pixel converting factors are used for x and y dimensions respectively. 
+The radius of lane curvature is calculated in meters (evaluated at the
+bottom of the image).  With the assumption of the lane width of 3.7m
+(over 640 pixels) and the length of 30m (over 720 pixels), 3.7/640 and
+30/720 meters per pixel converting factors are used for x and y dimensions
+respectively. 
 
-With pixel-to-meter converting factors, the polynomial coefficients and
+With pixel-to-meter conversion factors, the polynomial coefficients and
 the evaluating y-coordinate in pixels are converted to in meters.
-Then, the lane curvature is computed using _radius of curvature_ formula.
+Then, the lane curvature is computed using
+[radius of curvature](https://www.intmath.com/applications-differentiation/8-radius-curvature.php) 
+formula.
 
 The vehicle position (ie. horizontal offset from lane center in meters)
 is determined by computing the distance between image center
@@ -241,7 +244,7 @@ each test image.
 | test1             | 371.0 m         | 341.0 m         | -0.279 m        |
 | test2             | 379.0 m         | 310.0 m         | -0.377 m        |
 | test3             | 507.4 m         | 509.3 m         | -0.193 m        |
-| test4             | 776.1 m         | 142.2 m         | -0.497 m        |
+| test4             | 776.1 m         | 437.0 m         | -0.345 m        |
 | test5             | 398.4 m         | 242.2 m         | -0.119 m        |
 | test6             | 1185.5 m        | 1292.0 m        | -0.262 m        |
 
@@ -256,8 +259,8 @@ lane lines respectively).  Then, the highlight image is warped back to the
 original image perspective and overlayed onto the undistorted version of the
 original image.
 
-In addition, the radius of the lane curvature and vehicle offset are included
-in the resulting images.
+In addition, the radius of the lane curvature and vehicle offset are
+annotated to the resulting images.
 
 The original images (undistorted) with lane area highlighted are located under
 [output_images/overlay/](output_images/overlay/) directory.
@@ -269,6 +272,9 @@ An example image is shown below.
 
 ---
 ## Lane Detection on Video
+
+The resulting video files are located under
+[output_images/video/](output_images/video/) directory.
 
 ### 1. Apply Lane Detection on Video
 This a link to the final video output:
@@ -293,16 +299,16 @@ These are links to the results from challenging videos:
 
 #### Lane Line Pixel Detection Error
 One of the most prominent problems I noticed in the challenging videos is
-that the incorrect recognition of lane line pixels.  For example, in
+an incorrect recognition of lane line pixels.  For example, in
 `challenge_video.mp4`, the road divider exists on the far left of the
-left lane lines.  However, the pipeline often confused the shadow boundaries
-of the divider as lane lines.
+left lane lines.  However, the pipeline often got confused the shadow
+boundaries of the divider as lane line pixels.
 
 Similarly, certain road pavement irregularity also contributed the the
 detection error.  Some parts of `challenge_video.mp4` has lane pavement
 shade differences.  Especially when this boundary runs in parallel direction
-with lane lines in their proximity, the pipeline occasionally confuses the
-boundaries as lane lines.
+to the lane lines, the pipeline occasionally mistakes the
+boundaries as lane line pixels.
 
 This is a limitation of the gradient based lane line pixel identification
 in step 2.  More studies on the characteristics of lane lines and other common
@@ -349,12 +355,16 @@ detections.
   - [p05_04_identify_lane_line.py](py-src/p05_04_identify_lane_line.py)
   - [p05_05_curvature_offset.py](py-src/p05_05_curvature_offset.py)
   - [p05_06_overlay_annotate.py](py-src/p05_06_overlay_annotate.py)
+- Misc
+  - [my_util.py](py-src/my_util.py)
 
 #### Execution Log
 - Camera Calibration 
   - [camera_calibration.log](results/camera_calibration.log)
 - Lane Detection (test images) 
   - [lane_detection_test_images.log](results/lane_detection_test_images.log)
+- Lane Detection (test videos) 
+  - [lane_detection_test_videos.log](results/lane_detection_test_videos.log)
 
 #### Output Images
 - Camera Calibration
