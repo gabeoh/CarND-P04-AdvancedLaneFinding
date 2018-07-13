@@ -47,7 +47,7 @@ def overlay_lane_lines(img, camera_mtx, dist_coeffs, mtx_trans, mtx_trans_inv):
     img_undist = dist_correct.correct_image_distortion(img, camera_mtx, dist_coeffs)
 
     # 2) Create binary lane pixel image
-    img_bin_lane = bin_lane.create_lane_pixel_images(img)
+    img_bin_lane = bin_lane.create_lane_pixel_images(img_undist)
 
     # 3) Transform image perspective to bird's eye view
     img_trans = p_trans.transform_image_perspective(img_bin_lane, mtx_trans)
@@ -64,8 +64,8 @@ def overlay_lane_lines(img, camera_mtx, dist_coeffs, mtx_trans, mtx_trans_inv):
     img_lane_fill = draw_lane_areas(img_trans, img_height, poly_fit_l, poly_fit_r)
     img_lane_fill = id_ll.color_lane_lines(img_lane_fill, coords_lane_l, coords_lane_r)
 
-    # 6b) Overlay lane area on to the original image
-    img_overlay = overlay_on_original_image(img, img_lane_fill, mtx_trans_inv)
+    # 6b) Overlay lane area on to the original image (undistorted)
+    img_overlay = overlay_on_original_image(img_undist, img_lane_fill, mtx_trans_inv)
 
     # 6c) Add curvature and offset text
     text_curv = "Radius of Curvature (left, right): {:.0f}m, {:.0f}m".format(curv_l, curv_r)
