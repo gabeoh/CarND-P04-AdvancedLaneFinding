@@ -88,9 +88,10 @@ def detect_lane_video(video_files):
         print_section_header("Run lane detection on video - {}".format(video_file), 60)
 
         # Use subclip() to test with shorter video (the first 5 seconds for example)
-        # clip = VideoFileClip(video_path).subclip(0,5)
+        # clip = VideoFileClip(video_path).subclip(38,42)
         clip = VideoFileClip(video_path)
-        clip_processed = clip.fl_image(lambda img: over_annot.overlay_lane_lines(img, camera_mtx, dist_coeffs, mtx_trans, mtx_trans_inv))
+        prev_polys = [None, None]
+        clip_processed = clip.fl_image(lambda img: over_annot.overlay_lane_lines(img, camera_mtx, dist_coeffs, mtx_trans, mtx_trans_inv, prev_polys))
 
         # Write line detected videos to files
         clip_processed.write_videofile(video_out_path, audio=False)

@@ -79,9 +79,37 @@ def find_lane_pixel_coordinates(img):
     coord_y_lane_r = pix_coord_y[inds_lane_pix_r]
     return (coord_x_lane_l, coord_y_lane_l), (coord_x_lane_r, coord_y_lane_r), slide_wins
 
-def find_fitting_polynomials(img):
+def find_lane_pixel_coordinates_with_prev_poly(img, prev_polys):
+    # Convert img to binary
+    img_bin = np.zeros_like(img)
+    img_bin[img > img.max() // 2] = 1
+
+    # Find x and y coordinates of nonzero pixels
+    pix_coord_y, pix_coord_x = img_bin.nonzero()
+
+    win_margin = 100
+
+    # Find non-zero pixels within 'win_margin' of previous polynomial fit
+    a_l, b_l, c_l = prev_polys[0]
+    a_r, b_r, c_r = prev_polys[1]
+    inds_lane_pix_l = ((pix_coord_x > (a_l*(pix_coord_y**2) + b_l*pix_coord_y + c_l - win_margin)) &
+                       (pix_coord_x < (a_l*(pix_coord_y**2) + b_l*pix_coord_y + c_l + win_margin))).nonzero()[0]
+    inds_lane_pix_r = ((pix_coord_x > (a_r*(pix_coord_y**2) + b_r*pix_coord_y + c_r - win_margin)) &
+                       (pix_coord_x < (a_r*(pix_coord_y**2) + b_r*pix_coord_y + c_r + win_margin))).nonzero()[0]
+
+    # Collect all x and y coordinates of both left and right lane lines
+    coord_x_lane_l = pix_coord_x[inds_lane_pix_l]
+    coord_y_lane_l = pix_coord_y[inds_lane_pix_l]
+    coord_x_lane_r = pix_coord_x[inds_lane_pix_r]
+    coord_y_lane_r = pix_coord_y[inds_lane_pix_r]
+    return (coord_x_lane_l, coord_y_lane_l), (coord_x_lane_r, coord_y_lane_r), []
+
+def find_fitting_polynomials(img, prev_polys=None):
     # Find lane pixel coordinates
-    coords_lane_l, coords_lane_r, slide_wins = find_lane_pixel_coordinates(img)
+    if (prev_polys is not None and (prev_polys[0] is not None and prev_polys[1] is not None)):
+        coords_lane_l, coords_lane_r, slide_wins = find_lane_pixel_coordinates_with_prev_poly(img, prev_polys)
+    else:
+        coords_lane_l, coords_lane_r, slide_wins = find_lane_pixel_coordinates(img)
     coord_x_lane_l, coord_y_lane_l = coords_lane_l[0], coords_lane_l[1]
     coord_x_lane_r, coord_y_lane_r = coords_lane_r[0], coords_lane_r[1]
 
@@ -89,7 +117,20 @@ def find_fitting_polynomials(img):
     # x = f(y) to avoid fitting error for vertical line
     poly_fit_l = np.polyfit(coord_y_lane_l, coord_x_lane_l, 2)
     poly_fit_r = np.polyfit(coord_y_lane_r, coord_x_lane_r, 2)
-    return poly_fit_l, poly_fit_r, coords_lane_l, coords_lane_r, slide_wins
+
+    lane_width_min_max = None
+    if (prev_polys is not None and (prev_polys[0] is not None and prev_polys[1] is not None)):
+        # Use previous polynomial if new polynomial is inappropriate
+        img_height = img.shape[0]
+        y_val = np.linspace(0, img_height - 1, num=img_height)
+        x_val_l = poly_fit_l[0] * (y_val ** 2) + poly_fit_l[1] * y_val + poly_fit_l[2]
+        x_val_r = poly_fit_r[0] * (y_val ** 2) + poly_fit_r[1] * y_val + poly_fit_r[2]
+        lane_width_min_max = np.min(x_val_r - x_val_l), np.max(x_val_r - x_val_l)
+        if (lane_width_min_max[0] < 544 or lane_width_min_max[1] > 800):
+            poly_fit_l = prev_polys[0]
+            poly_fit_r = prev_polys[1]
+
+    return poly_fit_l, poly_fit_r, coords_lane_l, coords_lane_r, lane_width_min_max, slide_wins
 
 def color_lane_lines(img, coords_lane_l, coords_lane_r):
     out_img = np.copy(img)
@@ -100,7 +141,7 @@ def color_lane_lines(img, coords_lane_l, coords_lane_r):
     out_img[coord_y_lane_r, coord_x_lane_r] = [0, 0, 255]
     return out_img
 
-def perform_lane_line_detection_images(img_dir, out_dir=None):
+def perform_lane_line_detection_images(img_dir, out_dir=None, prev_polys=None):
     print_section_header("Find Lane Lines")
 
     images = sorted(os.listdir(img_dir))
@@ -112,7 +153,7 @@ def perform_lane_line_detection_images(img_dir, out_dir=None):
         img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         # Find fitting polynomials for lane lines in the image
-        poly_fit_l, poly_fit_r, coords_lane_l, coords_lane_r, slide_wins = find_fitting_polynomials(img_gray)
+        poly_fit_l, poly_fit_r, coords_lane_l, coords_lane_r, lane_width_min_max, slide_wins = find_fitting_polynomials(img_gray, prev_polys)
 
         print("Fitting polynomial (left)  for '{}': {:.6f}, {:.4f}, {:.1f}".format(
             img_file, poly_fit_l[0], poly_fit_l[1], poly_fit_l[2]))

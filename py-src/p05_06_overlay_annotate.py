@@ -40,7 +40,7 @@ def overlay_on_original_image(img, img_lane, mtx_trans_inv):
     img_lane_overlay = cv2.addWeighted(img, 1, img_lane_trans_back, 0.3, 0)
     return img_lane_overlay
 
-def overlay_lane_lines(img, camera_mtx, dist_coeffs, mtx_trans, mtx_trans_inv):
+def overlay_lane_lines(img, camera_mtx, dist_coeffs, mtx_trans, mtx_trans_inv, prev_polys=None):
     img_height, img_width = img.shape[0:2]
 
     # 1) Undistort image
@@ -53,7 +53,10 @@ def overlay_lane_lines(img, camera_mtx, dist_coeffs, mtx_trans, mtx_trans_inv):
     img_trans = p_trans.transform_image_perspective(img_bin_lane, mtx_trans)
 
     # 4) Find fitting polynomials for lane lines in the image
-    poly_fit_l, poly_fit_r, coords_lane_l, coords_lane_r, _ = id_ll.find_fitting_polynomials(img_trans)
+    poly_fit_l, poly_fit_r, coords_lane_l, coords_lane_r, lane_width_min_max, _ = id_ll.find_fitting_polynomials(img_trans, prev_polys)
+    if (prev_polys is not None):
+        prev_polys[0] = poly_fit_l
+        prev_polys[1] = poly_fit_r
 
     # 5) Compute lane curvature in meters at the bottom of the image
     curv_l = curv_off.get_curvature_in_meter(poly_fit_l, img_height)
@@ -72,6 +75,10 @@ def overlay_lane_lines(img, camera_mtx, dist_coeffs, mtx_trans, mtx_trans_inv):
     text_offset = "Vehicle is {:.2f}m {} of center".format(np.abs(offset), 'right' if offset > 0 else 'left')
     cv2.putText(img_overlay, text_curv, (50, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), lineType=cv2.LINE_AA)
     cv2.putText(img_overlay, text_offset, (50, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), lineType=cv2.LINE_AA)
+    # Annotate lane width for debugging purpose
+    if (False and lane_width_min_max is not None):
+        text_lane_width = "Lane Width (Min, Max): {:.0f}, {:.0f} in pixels".format(lane_width_min_max[0], lane_width_min_max[1])
+        cv2.putText(img_overlay, text_lane_width, (50, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), lineType=cv2.LINE_AA)
 
     return img_overlay
 

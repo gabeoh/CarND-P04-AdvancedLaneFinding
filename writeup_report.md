@@ -273,6 +273,23 @@ An example image is shown below.
 ---
 ## Lane Detection on Video
 
+In order to improve the lane detection pipeline implemented using test images, cross-frame
+relations are utilized for the video processing.  The position of the lane line only changes
+slightly in each consecutive frame in the video.  Therefore, we can utilize the polynomial
+fit found from previous frame to help detect lane lines in the subsequent frame.
+Instead of running the full sliding window method in each frame, the polynomial from
+the previous frame is used as the center of the lane pixel detection windows.
+
+Using this technique, the pipeline not only improved its performance (speed) but also
+reduced jitters.  In addition, when the new polynomial fit does not have high confidence
+in lane line detection, the fit from the previous frame is continued to be used.
+This rejects outlying predictions and smoothens overall lane detections.
+
+The implementation of the lane line detection using previous polynomial fit is located at
+`Line: 82-105` of
+[py-src/p05_04_identify_lane_line.py](py-src/p05_04_identify_lane_line.py),
+`find_lane_pixel_coordinates_with_prev_poly()` function.
+
 The resulting video files are located under
 [output_images/video/](output_images/video/) directory.
 
@@ -334,11 +351,14 @@ possible that they are not fully represented in the perspective transformed
 images.
 
 #### Other Potential Improvements
-Further improvement can be made to the pipeline by considering cross-frame
-relations.  By utilizing results (such as polynomial fit) from previous frames, 
-the pipeline can improve its performance (speed).  This information can also
-be used to reject outliers, which would reduce jitters and smoothen lane
-detections.
+Further improvement can be made to the pipeline especially regarding cross-frame relations.
+In the current implementation, only the width between two lane lines is used to determine
+the confidence level of the lane line fits.  However, there are more robust way of
+determining the confidence level such as matching lane shapes and counting detected lane
+line pixels.
+
+In addition, the detection can be further smoothened by combining detections from
+previous frames and new detection (such as weighted averaging). 
 
 
 ---

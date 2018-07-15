@@ -51,7 +51,7 @@ def perform_curvature_and_offset_measure(img_dir):
         img_height, img_width = img.shape[0:2]
 
         # Find fitting polynomials for lane lines in the image
-        poly_fit_l, poly_fit_r, _, _, _ = id_ll.find_fitting_polynomials(img)
+        poly_fit_l, poly_fit_r, _, _, _, _ = id_ll.find_fitting_polynomials(img)
 
         # Compute lane curvature in meters at the bottom of the image
         curv_l = get_curvature_in_meter(poly_fit_l, img_height)
